@@ -1,0 +1,8 @@
+let
+    Fonte = Csv.Document(File.Contents("D:\Downloads\TEC-8537 - Walmart\Mov_vendas_varejo_20200612-052024.txt"),[Delimiter=";", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Column1", Int64.Type}, {"Column2", Int64.Type}, {"Column3", type date}, {"Column4", Int64.Type}, {"Column5", Int64.Type}, {"Column6", Int64.Type}, {"Column7", type text}, {"Column8", type text}, {"Column9", Int64.Type}}),
+    #"Tipo Alterado com Localidade" = Table.TransformColumnTypes(#"Tipo Alterado", {{"Column8", type number}}, "en-US"),
+    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado com Localidade",{{"Column1", "Código Regional"}, {"Column2", "Código Atividade"}, {"Column3", "Data Movimento"}, {"Column4", "Código Local"}, {"Column5", "Código Produto"}, {"Column6", "Código Fornecedor"}, {"Column7", "Nro Estoque Fornecedor"}, {"Column8", "QTD Venda"}, {"Column9", "Média Preço Venda"}}),
+    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Colunas Renomeadas",{{"Código Regional", type text}, {"Código Atividade", type text}, {"Código Local", type text}, {"Código Produto", type text}, {"Código Fornecedor", type text}, {"Média Preço Venda", Currency.Type}})
+in
+    #"Tipo Alterado1"
